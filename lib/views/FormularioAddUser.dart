@@ -1,0 +1,99 @@
+import 'package:crud_project_v1/Controller/Controller.dart';
+import 'package:crud_project_v1/models/User.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+
+import 'UserList.dart';
+
+class FormularioAddUser extends StatelessWidget {
+
+  static String _nome='';
+  static String _email='';
+  static String _img='';
+  final ControllerProject _controller = new ControllerProject();
+
+  Widget _campos(int escolha, String dado){
+    return new TextField(
+      onChanged: (text) {
+        if(escolha==1){
+          _nome = text;
+        }else if(escolha==2){
+          _email = text;
+        }else{
+          _img = text;
+        }
+      },
+      decoration: new InputDecoration(
+          labelText: dado,
+          border: new OutlineInputBorder(
+              borderSide: new BorderSide(color: Colors.blue),
+              borderRadius: BorderRadius.circular(30)
+          )
+      ),
+    );
+  }
+
+
+  Widget _addBotao(BuildContext context){
+    return new IconButton(
+      icon: new Icon( Icons.library_add_rounded),
+      iconSize: 50,
+      color: Colors.black,
+      onPressed: () {
+        if(_nome==''||_email==''){
+          print("Operação cancelada");
+        }else{
+          User user = new User(_nome, _email, _img);
+          _controller.insertUser(user);
+        }
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) => new UserList()));
+      },
+    );
+  }
+
+
+  Widget _espaco(){
+    return new Container(
+      height: 20,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Center(
+          child: new Text("Adicionar Usuário"),
+        ),
+      ),
+      body: new SingleChildScrollView(
+        child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: new Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: new Form(
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Icon(Icons.person, size: 200,),
+                      _campos(1,"Nome"),
+                      _espaco(),
+                      _campos(2,"Email"),
+                      _espaco(),
+                      _campos(3,"Avatar"),
+                      _espaco(),
+                      _addBotao(context)
+                    ],
+                  ),
+                )
+            )
+        ),
+      ),
+    );
+
+  }
+}
