@@ -1,2 +1,2 @@
 # crud_project_v1
-## A simple crud project
+## A simple crud project written in Flutter
